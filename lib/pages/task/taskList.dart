@@ -22,7 +22,7 @@ class TaskListPage extends StatelessWidget {
       itemBuilder: (context, position) => GestureDetector(
         child: _buildTaskListItems(context, position),
         onTap: () {
-          Navigator.pushNamed(context, '/taskExecution', arguments: TaskArguments(_tasks[0]));
+          Navigator.pushNamed(context, '/taskExecution', arguments: TaskArguments(_tasks[position]));
           print('asdfsdf');
         },
       ) 

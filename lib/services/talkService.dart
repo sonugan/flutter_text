@@ -9,7 +9,7 @@ class TalkService {
     await flutterTts.setLanguage("es-AR");
     await flutterTts.setVolume(0.5);
     await flutterTts.setSpeechRate(1.0);
-    await flutterTts.setPitch(0.4);
+    await flutterTts.setPitch(0.5);
     if (text != null) {
       if (text.isNotEmpty) {
         await flutterTts.speak(text)

@@ -1,5 +1,5 @@
 name: Cocinando huevo frito
-description: Los huevos fritos se fríen solamente de un lado, para que la yema quede líquida y pueda ser untada con pan. Aunque su procedimiento de cocción parezca sencillo, hay muchas personas que los dejan muy crudos o demasiado cocidos, por lo que la yema se endurece y ya no hay vuelta atrás. Por tanto, échale un vistazo a este post para que de ahora en más la cocción sea perfecta.
+description: Los huevos fritos se fríen solamente de un lado, para que la yema quede líquida y pueda ser untada con pan. Aunque su procedimiento de cocción parezca sencillo, hay muchas personas que los dejan muy crudos o demasiado cocidos, por lo que la yema se endurece y ya no hay vuelta atrás.
 requirements:
   - name: Huevo
     count: 1

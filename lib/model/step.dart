@@ -5,8 +5,8 @@ class TaskStep {
        String description,
        List<TaskStep> dependsOn,
        List<TaskElement> requirements}) {
-    _order = order;
-    _description = description;
+    this.order = order;
+    this.description = description;
     _dependsOn = dependsOn;
     _requirements = requirements;
   }
@@ -19,8 +19,8 @@ class TaskStep {
     return !_dependsOn.any((r) => !r._finish);
   }
 
-  int _order;
-  String _description;
+  int order;
+  String description;
   List<TaskStep> _dependsOn;
   List<TaskElement> _requirements;
   bool _finish;

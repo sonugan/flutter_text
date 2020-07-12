@@ -6,8 +6,8 @@ import 'package:yaml/yaml.dart';
 
 import 'package:speach/model/task.dart';
 
-Future loadTask(BuildContext context) {
-  loadAsset(context).then((str) {
+Future<Task> loadTask(BuildContext context) {
+  return loadAsset(context).then((str) {
     var doc = loadYaml(str);
     return new Task(
       name: doc['name'], 
