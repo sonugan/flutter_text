@@ -23,7 +23,6 @@ class TaskListPage extends StatelessWidget {
         child: _buildTaskListItems(context, position),
         onTap: () {
           Navigator.pushNamed(context, '/taskExecution', arguments: TaskArguments(_tasks[position]));
-          print('asdfsdf');
         },
       ) 
     );

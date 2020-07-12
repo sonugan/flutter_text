@@ -17,6 +17,7 @@ Future<Task> loadTask(BuildContext context) {
           order: s['id'],
           description: s['description'],
           dependsOn: new List<TaskStep>(),
+          time: s['time'],
           requirements: new List<TaskElement>()
           ))));
   });

@@ -7,9 +7,9 @@ class TalkService {
 
   Future speach(String text) async {
     await flutterTts.setLanguage("es-AR");
-    await flutterTts.setVolume(0.5);
-    await flutterTts.setSpeechRate(1.0);
-    await flutterTts.setPitch(0.5);
+    await flutterTts.setVolume(.5);
+    await flutterTts.setSpeechRate(0.8);
+    await flutterTts.setPitch(.9);
     if (text != null) {
       if (text.isNotEmpty) {
         await flutterTts.speak(text)

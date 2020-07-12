@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:io';
+import 'dart:isolate';
+
 import 'package:speach/model/step.dart';
 
 class Task {
@@ -5,8 +9,20 @@ class Task {
     _steps = steps;
   }
 
+  Isolate isolate;  
+  List<TaskStep> currentSteps = [];
+
   start() {
-    _getAllStepsCanTake();
+    var possibleTasks = _getAllStepsCanTake();
+    if(possibleTasks.length > 0){
+      var step = possibleTasks[0];
+      step.run();
+      currentSteps.add(step);
+    }
+  }
+
+  List<TaskStep> needToCheck() {
+    return currentSteps.where((s) => s.needToCheck()).toList();
   }
 
   finish() {
@@ -14,7 +30,7 @@ class Task {
   }
 
   List<TaskStep> _getAllStepsCanTake() {
-    return _steps.where((s) => s.canBeTaked());
+    return _steps.where((s) => s.canBeTaked()).toList();
   }
 
   List<TaskStep> getOrderedSteps() {
