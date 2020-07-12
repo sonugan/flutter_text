@@ -5,7 +5,7 @@ import 'dart:isolate';
 import 'package:speach/model/step.dart';
 
 class Task {
-  Task({this.description, this.name, List<TaskStep> steps}) {
+  Task({this.id, this.description, this.name, List<TaskStep> steps}) {
     _steps = steps;
   }
 
@@ -43,6 +43,7 @@ class Task {
     return orderedSteps;
   }
 
+  String id;
   List<TaskStep> _steps;
   String name;
   String description;

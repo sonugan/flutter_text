@@ -40,18 +40,30 @@ class _TaskExecutionState extends State<TaskExecution> {
               body: Container(
               child: Column(
                 children: <Widget>[
-                  Text(snapshot.data.description),
-                  Text('Pasos'),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                    child: Text(
+                      snapshot.data.description,
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  ),
+                  Divider(color: Colors.black),
+                  Container(
+                    child: Text('Pasos', style: TextStyle(fontWeight: FontWeight.bold)),
+                  ),
                   Expanded(
-                    //height: 44.0,
-                    child: ListView.builder(
+                    child: ListView.separated(
                       itemCount: snapshot.data.getOrderedSteps().length,
                       itemBuilder: (context, index) {
                         var step = snapshot.data.getOrderedSteps()[index];
                         return ListTile(
-                          leading: Text(step.order.toString()),
+                          leading: Text(
+                            step.order.toString(),
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                           title: Text(step.description));
-                      }
+                      },
+                      separatorBuilder: (context, index) {
+                        return Divider();
+                      },
                     )
                   ),
                   FlatButton(
@@ -60,15 +72,14 @@ class _TaskExecutionState extends State<TaskExecution> {
                         style: TextStyle(fontSize: 20.0),
                       ),
                       onPressed: () {
-                        talkService.speach('Deja fundir la grasa hasta que comience a chisporrotear cuando viertas una gotita de agua.');
-                        // setState(() {
-                        //   started = !started;
-                        //   if(started) {
-                        //     task.start();
-                        //   } else {
-                        //     _checkIfFinish();
-                        //   }
-                        // });
+                        setState(() {
+                          started = !started;
+                          if(started) {
+                            task.start();
+                          } else {
+                            _checkIfFinish();
+                          }
+                        });
                         //Start task
                       },),
                 ],
