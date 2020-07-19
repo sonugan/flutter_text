@@ -17,7 +17,7 @@ class TaskStep {
 
   run() {
     _startedTime = new DateTime.now();
-    _started = true;
+    started = true;
     _checktime(time);
   }
 
@@ -25,6 +25,7 @@ class TaskStep {
     timer = Timer.periodic(new Duration(seconds: time), (Timer t) {
       tiempoExcedido = new DateTime.now().difference(_startedTime).inSeconds >= seconds;
       if(tiempoExcedido) {
+        tiempoExcedidoNotificado = false;
         timer.cancel();
         _startedTime = new DateTime.now();
         _checktime(seconds);
@@ -33,13 +34,15 @@ class TaskStep {
   }
 
   var tiempoExcedido = false;
+  var tiempoExcedidoNotificado = false;
 
   needToCheck() {
-    var tiempoExcedido = this.tiempoExcedido;
-    if ( this.tiempoExcedido) {
-      this.tiempoExcedido = false;
-    }
-    return tiempoExcedido;
+   var tiempoExcedido = new DateTime.now().difference(_startedTime).inSeconds >= time;
+   if (tiempoExcedido) {
+     _startedTime = new DateTime.now(); // reinicio la fecha de inicio
+     return true;
+   }
+   return false;
   }
 
   Timer timer;
@@ -54,6 +57,6 @@ class TaskStep {
   int time;
   List<TaskElement> _requirements;
   bool _finish;
-  bool _started = false;
+  bool started = false;
   DateTime _startedTime;
 }

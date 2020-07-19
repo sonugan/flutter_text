@@ -20,6 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_tts: 1.0.0
+  progress_indicators: ^0.1.5
   speech_to_text: 2.1.0
   speech_recognition: ^0.3.0+1
   yaml: ^2.2.1
