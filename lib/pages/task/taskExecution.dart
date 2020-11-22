@@ -24,7 +24,7 @@ class _TaskExecutionState extends State<TaskExecution> {
    return _builder(context);
   }
 
-  static Task task;
+  Task task;
 
   _builder(BuildContext context) {
     return new FutureBuilder<Task>(
@@ -97,8 +97,9 @@ class _TaskExecutionState extends State<TaskExecution> {
                             // if (timer.isActive) {
                             //   timer.cancel();
                             // }
+                            
                             _start();
-                            task.start();
+                            // task.start();
                           } else {
                             //timer.cancel();
                             _stop();
@@ -122,12 +123,24 @@ class _TaskExecutionState extends State<TaskExecution> {
  
   void _start() async {
     _running = true;
-    _receivePort = ReceivePort();
-    _isolate = await Isolate.spawn(_checkTimer, _receivePort.sendPort);
-    // SendPort sendPort = await _receivePort.first;
-    _receivePort.sendPort.send(task);
-    _receivePort.listen(_handleMessage, onDone:() {
-        print("done!");
+    // _receivePort = ReceivePort();
+    // _isolate = await Isolate.spawn(_checkTimer, _receivePort.sendPort);
+    // // SendPort sendPort = await _receivePort.first;
+    // _receivePort.sendPort.send(task);
+    // _receivePort.listen(_handleMessage, onDone:() {
+    //     print("done!");
+    // });
+    const oneSec = const Duration(seconds:1);
+    new Timer.periodic(oneSec, (Timer t) => {
+      _checkTasksStatus()
+    });
+  }
+
+  void _checkTasksStatus() {
+    task.name = 'pepe';
+    var t = task;
+    setState(() {
+      task = t;
     });
   }
 
@@ -185,5 +198,3 @@ class _TaskExecutionState extends State<TaskExecution> {
     // });
   }
 }
-
-var talkService = new TalkService();

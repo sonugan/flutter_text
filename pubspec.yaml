@@ -17,6 +17,8 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
+  flutter_isolate: ^1.0.0+14
+  isolate_handler: ^0.3.1
   flutter:
     sdk: flutter
   flutter_tts: 1.0.0

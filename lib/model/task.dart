@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 
+import 'package:flutter_isolate/flutter_isolate.dart';
+import 'package:isolate_handler/isolate_handler.dart';
 import 'package:speach/model/step.dart';
 
 class Task {
@@ -11,14 +13,29 @@ class Task {
 
   Isolate isolate;  
   List<TaskStep> currentSteps = [];
+  final isolates = IsolateHandler();
+  start() async {
+     // isolates.spawn(entryPoint, 
+    // name: 'Paso1',
+    // onReceive: (d) {
+    //   print(d);
+    // },
+    // onInitialized: () => isolates.send('asdsf', to: 'path'));
+    
+    // var possibleTasks = _getAllStepsCanTake();
+    // if(possibleTasks.length > 0){
+    //   var step = possibleTasks[0];
+    //   step.run();
+    //   currentSteps.add(step);
+    // }
+  }
 
-  start() {
-    var possibleTasks = _getAllStepsCanTake();
-    if(possibleTasks.length > 0){
-      var step = possibleTasks[0];
-      step.run();
-      currentSteps.add(step);
-    }
+  void entryPoint(Map<String, dynamic> context) {
+    final messenger = HandledIsolate.initialize(context);
+    messenger.listen((c) {
+      messenger.send(c +1 );
+    });
+    messenger.send(1);
   }
 
   List<TaskStep> needToCheck() {
