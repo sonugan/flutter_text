@@ -22,12 +22,12 @@ class Task {
     // },
     // onInitialized: () => isolates.send('asdsf', to: 'path'));
     
-    // var possibleTasks = _getAllStepsCanTake();
-    // if(possibleTasks.length > 0){
-    //   var step = possibleTasks[0];
-    //   step.run();
-    //   currentSteps.add(step);
-    // }
+    var possibleTasks = _getAllStepsCanTake();
+    if(possibleTasks.length > 0){
+      var step = possibleTasks[0];
+      step.run();
+      currentSteps.add(step);
+    }
   }
 
   void entryPoint(Map<String, dynamic> context) {
@@ -39,6 +39,9 @@ class Task {
   }
 
   List<TaskStep> needToCheck() {
+    if (currentSteps.length == 0) {
+      var a = 0;
+    }
     return currentSteps.where((s) => s.needToCheck()).toList();
   }
 

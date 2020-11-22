@@ -98,13 +98,14 @@ class _TaskExecutionState extends State<TaskExecution> {
                             //   timer.cancel();
                             // }
                             
-                            _start();
+                            _start(true);
                             // task.start();
                           } else {
                             //timer.cancel();
                             _stop();
+                            timer.cancel();
                           }
-                          _checkIfFinish();
+                          // _checkIfFinish();
                         });
                         //Start task
                       },),
@@ -120,8 +121,8 @@ class _TaskExecutionState extends State<TaskExecution> {
   static int _counter = 0;
   String notification = "";
   ReceivePort _receivePort;
- 
-  void _start() async {
+  Timer timer;
+  void _start(bool startTask) async {
     _running = true;
     // _receivePort = ReceivePort();
     // _isolate = await Isolate.spawn(_checkTimer, _receivePort.sendPort);
@@ -130,18 +131,23 @@ class _TaskExecutionState extends State<TaskExecution> {
     // _receivePort.listen(_handleMessage, onDone:() {
     //     print("done!");
     // });
-    const oneSec = const Duration(seconds:1);
-    new Timer.periodic(oneSec, (Timer t) => {
+    const oneSec = const Duration(seconds:10);
+    timer = new Timer.periodic(oneSec, (Timer t) => {
       _checkTasksStatus()
     });
+    if (startTask) {
+      task.start();
+    }
   }
 
   void _checkTasksStatus() {
+    // var steps = task.needToCheck();
+    _checkIfFinish();
     task.name = 'pepe';
-    var t = task;
-    setState(() {
-      task = t;
-    });
+    // var t = task;
+    // setState(() {
+    //   task = t;
+    // });
   }
 
   static void _checkTimer(SendPort sendPort) async {
@@ -185,16 +191,27 @@ class _TaskExecutionState extends State<TaskExecution> {
   //Timer timer;
   _checkIfFinish() {
     // timer = Timer.periodic(new Duration(seconds: 2), (Timer t) {
-    //   if(started && !isChecking) {
-    //     isChecking = true;
-    //     var values = task.needToCheck();
-    //     if(values.length > 0) {
-    //       values.forEach((s) {
-    //        // talkService.speach('¿Terminaste el paso ' + s.order.toString() + '?');
-    //       });
-    //     }
-    //     isChecking = false;
-    //   }
+      if(started && !isChecking) {
+        isChecking = true;
+        timer.cancel();
+        var values = task.needToCheck();
+        if(values.length > 0) {
+          values.forEach((s) {
+           TalkService.getInstance().speach('¿Terminaste el paso ' + s.order.toString() + '?');
+           TalkService.getInstance().listen(_stepFinalized, _stepNotFinalized);
+          });
+        }
+        _start(true);
+        isChecking = false;
+      }
     // });
+  }
+
+  _stepFinalized() {
+    print('La tarea ha finalizado!!!!');
+  }
+
+  _stepNotFinalized() {
+    print('La tarea NO ha finalizado!!!!');
   }
 }
