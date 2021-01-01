@@ -5,13 +5,15 @@ import 'package:speach/model/element.dart';
 class TaskStep {
   TaskStep({int order,
        String description,
-       List<TaskStep> dependsOn,
+       List<int> dependsOnIds,
        int time,
        List<TaskElement> requirements}) {
     this.order = order;
     this.description = description;
-    _dependsOn = dependsOn;
+    // _dependsOn = dependsOn;
+    this.dependsOnIds = dependsOnIds;
     this.time = time;
+    this._finish = false;
     _requirements = requirements;
   }
 
@@ -48,7 +50,7 @@ class TaskStep {
   Timer timer;
 
   bool canBeTaked() {
-    return !_dependsOn.any((r) => !r._finish);
+    return dependsOn == null || !dependsOn.any((r) => !r._finish);
   }
 
   void finish() {
@@ -57,7 +59,8 @@ class TaskStep {
 
   int order;
   String description;
-  List<TaskStep> _dependsOn;
+  List<TaskStep> dependsOn;
+  List<int> dependsOnIds;
   int time;
   List<TaskElement> _requirements;
   bool _finish;

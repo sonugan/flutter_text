@@ -22,7 +22,7 @@ class Task {
     // },
     // onInitialized: () => isolates.send('asdsf', to: 'path'));
     
-    var possibleTasks = _getAllStepsCanTake();
+    var possibleTasks = _getAllStepsCanTake().where((s) => currentSteps.where((sc) => sc.order == s.order).length == 0).toList();
     if(possibleTasks.length > 0){
       var step = possibleTasks[0];
       step.run();
@@ -50,6 +50,11 @@ class Task {
   }
 
   finish() {
+
+  }
+
+  finishStep(TaskStep step) {
+    step.finish();
 
   }
 

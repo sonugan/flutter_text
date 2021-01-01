@@ -163,8 +163,9 @@ class _TaskExecutionState extends State<TaskExecution> {
 
   _stepFinalized(TaskStep step) {
     print(step);
-    step.finish();
-    print('La tarea ha finalizado!!!!');
+    task.finishStep(step);
+    // step.finish();
+    print('El paso ha finalizado!!!!');
   }
 
   _stepNotFinalized(TaskStep step) {
