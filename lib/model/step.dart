@@ -51,6 +51,10 @@ class TaskStep {
     return !_dependsOn.any((r) => !r._finish);
   }
 
+  void finish() {
+    _finish = true;
+  }
+
   int order;
   String description;
   List<TaskStep> _dependsOn;

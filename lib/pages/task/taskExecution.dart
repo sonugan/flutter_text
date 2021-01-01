@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:isolate';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_indicators/progress_indicators.dart';
@@ -68,9 +66,6 @@ class _TaskExecutionState extends State<TaskExecution> {
                         TaskStep step = task != null ? task.getOrderedSteps()[index] : snapshot.data.getOrderedSteps()[index];
                         return Column(children: <Widget>[
                            Card(
-                            // shape: ContinuousRectangleBorder(
-                            //   borderRadius: BorderRadius.zero,
-                            // ),
                             borderOnForeground: true,
                             elevation: 1,
                             margin: step.started ? EdgeInsets.all(4.0) : EdgeInsets.fromLTRB(0,0,0,0),
@@ -118,19 +113,11 @@ class _TaskExecutionState extends State<TaskExecution> {
 
   Isolate _isolate;
   bool _running = false;
-  static int _counter = 0;
   String notification = "";
   ReceivePort _receivePort;
   Timer timer;
   void _start(bool startTask) async {
     _running = true;
-    // _receivePort = ReceivePort();
-    // _isolate = await Isolate.spawn(_checkTimer, _receivePort.sendPort);
-    // // SendPort sendPort = await _receivePort.first;
-    // _receivePort.sendPort.send(task);
-    // _receivePort.listen(_handleMessage, onDone:() {
-    //     print("done!");
-    // });
     const oneSec = const Duration(seconds:10);
     timer = new Timer.periodic(oneSec, (Timer t) => {
       _checkTasksStatus()
@@ -141,45 +128,15 @@ class _TaskExecutionState extends State<TaskExecution> {
   }
 
   void _checkTasksStatus() {
-    // var steps = task.needToCheck();
     _checkIfFinish();
-    task.name = 'pepe';
     // var t = task;
     // setState(() {
     //   task = t;
     // });
   }
 
-  static void _checkTimer(SendPort sendPort) async {
-    Timer.periodic(new Duration(seconds: 1), (Timer t) async {
-      try {
-        var port = new ReceivePort();
-        //sendPort.send(port.sendPort);
-        await for (var data in port) {
-          if (data != null) {
-            var steps = data.needToCheck();
-            _counter++;
-            sendPort.send(steps);
-          }
-        }
-      } catch(e){
-        print(e);
-      }
-    });
-  }
-
-  void _handleMessage(dynamic steps) {
-    if(steps != null && steps.length > 0) {
-      print('a');
-    }
-  }
-
   void _stop() {
     if (_isolate != null) {
-      // setState(() {
-      //     _running = false; 
-      //     notification = '';   
-      // });
       _receivePort.close();
       _isolate.kill(priority: Isolate.immediate);
       _isolate = null;        
@@ -188,9 +145,7 @@ class _TaskExecutionState extends State<TaskExecution> {
 
   var started = false;
   var isChecking = false;
-  //Timer timer;
   _checkIfFinish() {
-    // timer = Timer.periodic(new Duration(seconds: 2), (Timer t) {
       if(started && !isChecking) {
         isChecking = true;
         timer.cancel();
@@ -198,20 +153,22 @@ class _TaskExecutionState extends State<TaskExecution> {
         if(values.length > 0) {
           values.forEach((s) {
            TalkService.getInstance().speach('¿Terminaste el paso ' + s.order.toString() + '?');
-           TalkService.getInstance().listen(_stepFinalized, _stepNotFinalized);
+           TalkService.getInstance().listen(() => _stepFinalized(s), () => _stepNotFinalized(s));
           });
         }
         _start(true);
         isChecking = false;
       }
-    // });
   }
 
-  _stepFinalized() {
+  _stepFinalized(TaskStep step) {
+    print(step);
+    step.finish();
     print('La tarea ha finalizado!!!!');
   }
 
-  _stepNotFinalized() {
+  _stepNotFinalized(TaskStep step) {
+    print(step);
     print('La tarea NO ha finalizado!!!!');
   }
 }

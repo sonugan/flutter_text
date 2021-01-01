@@ -14,7 +14,7 @@ class Task {
   Isolate isolate;  
   List<TaskStep> currentSteps = [];
   final isolates = IsolateHandler();
-  start() async {
+  TaskStep start() {
      // isolates.spawn(entryPoint, 
     // name: 'Paso1',
     // onReceive: (d) {
@@ -27,7 +27,9 @@ class Task {
       var step = possibleTasks[0];
       step.run();
       currentSteps.add(step);
+      return step;
     }
+    return null;
   }
 
   void entryPoint(Map<String, dynamic> context) {
@@ -39,10 +41,12 @@ class Task {
   }
 
   List<TaskStep> needToCheck() {
-    if (currentSteps.length == 0) {
-      var a = 0;
-    }
     return currentSteps.where((s) => s.needToCheck()).toList();
+  }
+
+  TaskStep nextTask() {
+    var available = currentSteps.where((s) => s.needToCheck());
+    return available.length > 0 ? available.first : null;
   }
 
   finish() {
