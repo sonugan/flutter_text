@@ -64,7 +64,10 @@ class TalkService {
   }
 
   static bool isOkCommand(String text) {
-    return text == "tarea finalizada";
+    if (text == null || text == '') {
+      return false;
+    }
+    return text.contains('finalizada') || text == 'okay' || text == 'sí' || text == 'si';
   }
 
   static bool isNoOkCommand(String text) {

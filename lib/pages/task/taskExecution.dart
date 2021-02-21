@@ -69,7 +69,7 @@ class _TaskExecutionState extends State<TaskExecution> {
                             borderOnForeground: true,
                             elevation: 1,
                             margin: step.started ? EdgeInsets.all(4.0) : EdgeInsets.fromLTRB(0,0,0,0),
-                            color: Colors.white,
+                            color: step.started ? Colors.red : Colors.white,
                             child: ListTile(
                               leading: Text(
                                 step.order.toString(),
@@ -113,17 +113,26 @@ class _TaskExecutionState extends State<TaskExecution> {
 
   Isolate _isolate;
   bool _running = false;
+  TaskStep lastSpeachStep = null;
   String notification = "";
   ReceivePort _receivePort;
   Timer timer;
   void _start(bool startTask) async {
+    TalkService.getInstance();
     _running = true;
     const oneSec = const Duration(seconds:10);
     timer = new Timer.periodic(oneSec, (Timer t) => {
       _checkTasksStatus()
     });
     if (startTask) {
-      task.start();
+      var newStep = task.start();
+      if (newStep != null && lastSpeachStep != newStep) {
+        TalkService.getInstance().speach('Paso ' + newStep.order.toString() + ' ' + newStep.description);
+        lastSpeachStep = newStep;
+      }
+      // this.setState(() {
+      //   task = this.task;
+      // });
     }
   }
 
@@ -149,7 +158,7 @@ class _TaskExecutionState extends State<TaskExecution> {
       if(started && !isChecking) {
         isChecking = true;
         timer.cancel();
-        var values = task.needToCheck();
+        var values = task.needToCheck().where((s) => !s.hasFinish());
         if(values.length > 0) {
           values.forEach((s) {
            TalkService.getInstance().speach('¿Terminaste el paso ' + s.order.toString() + '?');

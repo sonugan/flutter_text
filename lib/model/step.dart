@@ -57,6 +57,10 @@ class TaskStep {
     _finish = true;
   }
 
+  bool hasFinish() {
+    return this._finish;
+  }
+
   int order;
   String description;
   List<TaskStep> dependsOn;

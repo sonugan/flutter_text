@@ -12,7 +12,7 @@ steps:
     time: 5
   - id: 2
     description: Deja fundir la grasa hasta que comience a chisporrotear cuando viertas una gotita de agua. Este truco se emplea para saber si la temperatura del aceite es la adecuada para cocinar el huevo frito perfectamente.
-    time: 20
+    time: 5
     require: [1]
   - id: 3
     description: Rompe el huevo suavemente para que no se deshaga la yema, y déjalo caer sobre la mantequilla o el aceite.
