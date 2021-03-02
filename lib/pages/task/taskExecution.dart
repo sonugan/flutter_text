@@ -121,12 +121,15 @@ class _TaskExecutionState extends State<TaskExecution> {
     TalkService.getInstance();
     _running = true;
     const oneSec = const Duration(seconds:10);
+    if (timer != null) {
+      timer.cancel();
+    }
     timer = new Timer.periodic(oneSec, (Timer t) => {
       _checkTasksStatus()
     });
     if (startTask) {
       var newStep = task.start();
-      if (newStep != null && lastSpeachStep != newStep) {
+      if (newStep != null && (lastSpeachStep == null || lastSpeachStep.order != newStep.order)) {
         TalkService.getInstance().speach('Paso ' + newStep.order.toString() + ' ' + newStep.description);
         lastSpeachStep = newStep;
       }
@@ -157,7 +160,7 @@ class _TaskExecutionState extends State<TaskExecution> {
   _checkIfFinish() {
       if(started && !isChecking) {
         isChecking = true;
-        timer.cancel();
+        // timer.cancel();
         var values = task.needToCheck().where((s) => !s.hasFinish());
         if(values.length > 0) {
           values.forEach((s) {

@@ -39,6 +39,9 @@ class TaskStep {
   var tiempoExcedidoNotificado = false;
 
   needToCheck() {
+   if (_finish) {
+     return false;
+   }
    var tiempoExcedido = new DateTime.now().difference(_startedTime).inSeconds >= time;
    if (tiempoExcedido) {
      _startedTime = new DateTime.now(); // reinicio la fecha de inicio
